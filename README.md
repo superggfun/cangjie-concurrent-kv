@@ -1,4 +1,4 @@
-# Cangjie_KVs
+# Cangjie_KV
 
 A high-performance in-memory key–value store written in **Cangjie**, inspired by **SwissTable** and designed for concurrent workloads (shards + seqlock readers).
 
@@ -46,4 +46,5 @@ match (kv.get("foo")) {
 kv.erase("bar")
 
 let txt = kv.serialize()
+
 let kv2 = KeyValue.deserialize(txt)
