@@ -2,7 +2,7 @@
 
 🏆 Winner – Huawei Tech Arena UK 2025
 
-This project was originally developed for the Huawei Tech Arena UK 2025 challenge (concurrent key–value store problem).
+Originally developed for the Huawei Tech Arena UK 2025 concurrent key–value store challenge.
 
 A high-performance in-memory key–value store written in Cangjie, inspired by SwissTable and designed for concurrent workloads (shards + seqlock readers).
 
@@ -50,6 +50,7 @@ kv.erase("bar")
 let txt = kv.serialize()
 
 let kv2 = KeyValue.deserialize(txt)
+
 
 
 
