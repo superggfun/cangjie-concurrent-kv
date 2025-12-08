@@ -299,13 +299,44 @@ private class SwissRaw {
         }
     }
 
-    // （原先的 fillKeysAppendNoLock_ 改为返回 Array）
-    // Previously fillKeysAppendNoLock_ appended; now we simply return an Array
     public static func fillKeysNoLock_(tab: SwissRaw): Array<String> {
         let cnt = tab.size
+        if (cnt <= 0) { return Array<String>() }
+    
         var arr = Array<String>(Int64(cnt), { _ => "" })
         var w: Int32 = 0
         var j: Int32 = 0
+    
+        while (j < tab.cap) {
+            if (tab.ctrlAt(j) < 0x80u8) {
+                if (w < cnt) {
+                    arr[Int64(w)] = tab.slots[Int64(j)].key
+                    w = w + 1
+                } else {
+                    // size 低估了 live 数，回退到安全的两趟法
+                    return SwissRaw.fillKeysCountedNoLock_(tab)
+                }
+            }
+            j = j + 1
+        }
+    
+        if (w == cnt) { return arr }
+    
+        var arr2 = Array<String>(Int64(w), { _ => "" })
+        var i: Int32 = 0
+        while (i < w) { arr2[Int64(i)] = arr[Int64(i)]; i = i + 1 }
+        return arr2
+    }
+    
+    // 你原来的两趟计数版本改个名字保留
+    public static func fillKeysCountedNoLock_(tab: SwissRaw): Array<String> {
+        var cnt: Int32 = 0
+        var j: Int32 = 0
+        while (j < tab.cap) { if (tab.ctrlAt(j) < 0x80u8) { cnt = cnt + 1 }; j = j + 1 }
+    
+        var arr = Array<String>(Int64(cnt), { _ => "" })
+        var w: Int32 = 0
+        j = 0
         while (j < tab.cap) {
             if (tab.ctrlAt(j) < 0x80u8) {
                 arr[Int64(w)] = tab.slots[Int64(j)].key
@@ -313,13 +344,7 @@ private class SwissRaw {
             }
             j = j + 1
         }
-        // 理论上 w == cnt
-        if (w == cnt) { return arr }
-        // 极端保护性收缩
-        var arr2 = Array<String>(Int64(w), { _ => "" })
-        var i: Int32 = 0
-        while (i < w) { arr2[Int64(i)] = arr[Int64(i)]; i = i + 1 }
-        return arr2
+        return arr
     }
 
     public func get(k: String): Option<Int64> {
@@ -790,5 +815,6 @@ public class KeyValue {
         return kv
     }
 }
+
 
 
