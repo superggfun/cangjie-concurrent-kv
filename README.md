@@ -35,7 +35,7 @@ The main type exposed by the library is:
 A sharded, SwissTable-style concurrent key–value store implementing **strict production key semantics** (no mode switch), optimized for **String → Int64**.  
 It provides **old-value returns** for update/remove-style operations, a **stdlib-like facade**, and **O(N)** text-based serialization/deserialization.
 
-一个基于分片 + SwissTable（ctrl 指针版）+ seqlock 的并发键值容器，使用**严格生产环境 key 语义**（无模式切换），面向 **String → Int64** 场景优化。  
+一个基于分片 + SwissTable（ctrl 指针版）+ seqlock 的并发键值容器，面向 **String → Int64** 场景优化。  
 支持**返回旧值**、**标准库风格接口**，并提供 **O(N)** 文本序列化/反序列化能力。
 
 ---
@@ -203,6 +203,7 @@ let txt = kv.serialize()
 
 let kv2 = KeyValue.deserialize(txt)
 ```
+
 
 
 
