@@ -1,12 +1,4 @@
 // KeyValue.cj — SwissTable (ctrl pointer version) + shards + seqlock
-// + strict production key semantics (no mode switch)
-// + old-value returns + stdlib-like facade
-// + O(N) serialize/deserialize
-//
-// 原始 SwissTable（ctrl 指针版本）+ 分片 + seqlock
-// + 生产环境严格 key 语义（无模式开关）
-// + 返回旧值 + 标准库风格 facade
-// + O(N) 序列化/反序列化
 package techarena
 
 import std.sync.*
@@ -937,3 +929,4 @@ private class KeyValueIterator <: Iterator<(String, Int64)> {
         return None
     }
 }
+
